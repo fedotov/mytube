@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  app:
+    build: .
+    command: npm run test-container
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules
+    ports:
+      - '3300:3300'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: 'db'
+    env_file:
+      - app.test.env
+    networks:
+      - internal-network
+  db:
+    image: mysql:5.7.27
+    env_file:
+      - db.test.env
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+      - internal-network
+networks:
+  internal-network:

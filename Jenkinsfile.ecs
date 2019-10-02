@@ -1,0 +1,128 @@
+#!groovy
+@Library('jenkins-shared-libraries') _
+
+pipeline {
+    agent none
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+        timeout(time: 14, unit: 'DAYS')
+    }
+    environment {
+        ECR_URI = "270415379060.dkr.ecr.eu-west-1.amazonaws.com/search-platform-ecr/search-experience-service"
+        APP_NAME = 'search-experience-service'
+        REGION = "eu-west-1"
+        TEAMS_CHANNEL = "https://outlook.office.com/webhook/1ba00c7b-f01c-4654-a6b2-0a563844d227@4ae954f5-3f64-490f-8634-e9206462325b/IncomingWebhook/dc678d5ecb9143d4865245ed4967fc16/3db0829a-1f47-479e-be57-6e828f07955c"
+    }
+    stages {
+// TEST
+        stage('TEST') {
+            agent {
+                label 'node-tooling'
+            }
+            steps {
+                echo 'Running tests'
+                script {
+                    sh '''
+                        node -v
+                        npm -v
+                        npm install --no-optional --registry=http://npm.eceit.net
+                        npm run test
+                    '''
+                }
+            }
+        }
+
+        stage('BASE STAGE') {
+            agent {
+                label 'docker'
+            }
+            environment {
+                APPLICATION_TAG = "${getVersionFromFile()}-${env.GIT_COMMIT.take(7)}"
+            }
+            stages {
+
+// BUILD
+                stage('Build') {
+                    steps {
+                        script {
+                            currentBuild.displayName = env.APPLICATION_TAG
+                        }
+                        sh "docker build -f Dockerfile -t ${ECR_URI}:${APPLICATION_TAG} ."
+                    }
+                }
+
+// PUBLISH
+                stage('Publish') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        withCredentials([[
+                            $class: 'AmazonWebServicesCredentialsBinding',
+                            credentialsId: 'aws-search-platform'
+                        ]]) {
+                            sh '''
+                                set +x
+                                $(aws ecr get-login --no-include-email --region ${REGION})
+                                set -x
+                            '''
+                            sh "docker push ${ECR_URI}:${APPLICATION_TAG}"
+                        }
+                    }
+                }
+            }
+            post {
+                always {
+                    sh "docker rmi ${ECR_URI}:${APPLICATION_TAG} || true"
+                }
+                success {
+                    office365ConnectorSend message: "search-experience-service successfully built", status: "SUCCESS", color: "#3C9F23", webhookUrl: "${TEAMS_CHANNEL}"
+                }
+                failure {
+                    office365ConnectorSend message: "search-experience-service pipeline failed", status: "FAILURE", color: "FF0000", webhookUrl: "${TEAMS_CHANNEL}"
+                }
+            }
+        }
+
+// INTEGRATION
+        stage('Integration Release') {
+            when {
+                branch 'master'
+            }
+            environment {
+                ENVIRONMENT = 'integration'
+            }
+            stages {
+                stage('Deployment') {
+                    agent {
+                      label 'aws-cli'
+                    }
+                    environment {
+                        AWS_ACCOUNT_ID = 517292337303
+                        APPLICATION_TAG = "${getVersionFromFile()}-${env.GIT_COMMIT.take(7)}"
+                        TASK_DEFINTION_PATH = "task_definition/${APP_NAME}-${ENVIRONMENT}-${APPLICATION_TAG}.json"
+                    }
+                    steps {
+                        withCredentials([[
+                            $class: 'AmazonWebServicesCredentialsBinding',
+                            credentialsId: 'aws-search-dev'
+                        ]]) {
+                            sh "sed 's/APPLICATION_TAG/'\"${APPLICATION_TAG}\"'/g; s/AWS_ACCOUNT_ID/'\"${AWS_ACCOUNT_ID}\"'/g;' task_definition/${ENVIRONMENT}.tpl.json > ${TASK_DEFINTION_PATH}"
+                            sh registerTaskDef(TASK_DEFINTION_PATH, REGION)
+                            sh ecsUpdateService('search-dev-ecs-cluster-aws-integration', APP_NAME, APP_NAME)
+                            sh ecsWaitServiceStable('search-dev-ecs-cluster-aws-integration', APP_NAME)
+                        }
+                    }
+                }
+            }
+            post {
+                success {
+                    office365ConnectorSend message: "search-experience-service successfully deployed to INT", status: "SUCCESS", color: "#3C9F23", webhookUrl: "${TEAMS_CHANNEL}"
+                }
+                failure {
+                    office365ConnectorSend message: "search-experience-service pipeline failed INT stage", status: "FAILURE", color: "FF0000", webhookUrl: "${TEAMS_CHANNEL}"
+                }
+            }
+        }
+    }
+}
