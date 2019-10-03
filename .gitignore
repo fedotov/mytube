@@ -72,3 +72,5 @@ src/**/*.js.map
 # test
 test/**/*.js
 test/**/*.js.map
+
+.env
