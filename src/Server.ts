@@ -5,11 +5,15 @@ import * as express from 'express';
 import { initialize } from 'express-openapi';
 import { readFileSync } from 'fs';
 import * as http from 'http';
+import * as yaml from 'js-yaml';
 import { resolve as pathResolve } from 'path';
 import * as swaggerUi from 'swagger-ui-express';
 
-const docsPath = pathResolve(__dirname, '../config/api-doc.json');
-const apiDoc = JSON.parse(readFileSync(docsPath, 'utf8'));
+const docsPath = pathResolve(__dirname, '../config/api-doc.yaml');
+const apiDoc = readFileSync(docsPath, 'utf8');
+
+const swaggerDocument = yaml.safeLoad(apiDoc);
+
 const paths = pathResolve(__dirname, './routes');
 const promiseMode = true;
 
@@ -66,7 +70,7 @@ export class Server {
   private initMiddlewares(): void {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({extended: false}));
-    this.expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc));
+    this.expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this.expressApp.get('/api', (req, res) => res.json(apiDoc));
     this.expressApp.use((req, res, next) => {
       App.logger.info(`Incoming request ${req.path}. Body: ${ JSON.stringify(req.body)}. Query: ${JSON.stringify(req.query)}`);

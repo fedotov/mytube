@@ -2,7 +2,7 @@
 
 . ./local/run.sh
 
-CONTAINER_NAME='mytube-app-db'
-CONFIG=.env
+CONTAINER_NAME='mytube-test-db'
+CONFIG=.test.env
 
 run ${CONTAINER_NAME} ${CONFIG}

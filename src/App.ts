@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 
 import { Sequelize } from 'sequelize';
+import * as YouTube from 'simple-youtube-api';
 import { DB } from './DB';
 import { BaseApp, Config, Logger } from './modules/coreServices/node-services';
 
@@ -9,6 +10,7 @@ import { BaseApp, Config, Logger } from './modules/coreServices/node-services';
  */
 export class App extends BaseApp {
   private static database: Sequelize;
+  private static youTube: YouTube;
 
   public static get config(): Config {
     return BaseApp.config;
@@ -22,6 +24,9 @@ export class App extends BaseApp {
     return this.database;
   }
 
+  public static get youTubeClient(): YouTube {
+    return this.youTube;
+  }
 
   public static async INIT() {
 
@@ -35,5 +40,7 @@ export class App extends BaseApp {
 
     const db = new DB();
     this.database = await db.connect();
+
+    this.youTube = new YouTube(App.config.get('YOUTUBE:KEY'));
   }
 }

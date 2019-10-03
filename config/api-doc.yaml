@@ -1,0 +1,140 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Mytube App
+host: localhost:3300
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+  - text/plain
+paths:
+  /status:
+    x-swagger-router-controller: status
+    get:
+      description: |
+        Get current app status
+      operationId: status
+      responses:
+        '200':
+          description: App status
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Status'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /video/search/{query}:
+    x-swagger-router-controller: search
+    get:
+      description: Returns a list of queried videos
+      operationId: search
+      parameters:
+        - name: query
+          in: body
+          description: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: App status
+          schema:
+            type: object
+            properties:
+              x:
+                type: number
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /video/history:
+    x-swagger-router-controller: history
+    get:
+      description: Get history list
+      operationId: get
+      responses:
+        '200':
+          description: App status
+          schema:
+            $ref: '#/definitions/Status'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Put to history list
+      parameters:
+        - in: body
+          name: body
+          description: Pass two numbers as a & b and returns sum.
+          schema:
+            $ref: '#/definitions/historyItem'
+      responses:
+        '200':
+          description: App status
+          schema:
+            $ref: '#/definitions/historyItem'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: delete from history
+      parameters:
+        - in: body
+          name: body
+          description: Pass two numbers as a & b and returns sum.
+          schema:
+            $ref: '#/definitions/historyItem'
+      responses:
+        '204':
+          description: item deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:
+  Status:
+    type: object
+    properties:
+      status:
+        type: string
+      status_message:
+        type: string
+      app_version:
+        type: string
+      app_name:
+        type: string
+  historyItem:
+    type: object
+    required:
+      - id
+      - title
+      - thumbnail
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      thumbnail:
+        type: string
+  Error:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": "./node_modules/tc-nodejs-core-services/tslint.json",
+  "extends": "./node_modules/tslint-microsoft-contrib/tslint.json",
   "jsRules": {
     "max-line-length": {
       "options": [

@@ -12,9 +12,9 @@ class History extends Model {
 }
 
 /**
- * Connection WhatsIncludedItem with History
+ * Connection mytubeItem with History
  */
-class WhatsIncludedItemHistory extends Model {}
+class mytubeItemHistory extends Model {}
 
 const init = (db) => {
   History.init({
