@@ -1,55 +1,23 @@
-// import { filter } from 'lodash';
-import { App } from '../App';
+import { History } from '../models/History.model';
 
 module.exports = {
   get: async (req, res) => {
-    const q = req.query.q;
-    const searchResult = await App.youTubeClient.searchVideos(q, 10);
+    const items = await History.findAll();
 
-    const allowed = ['title', 'thumbnails'];
-    const filtered = Object.keys(searchResult)
-      .filter(key => allowed.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = searchResult[key];
-
-        return obj;
-      }, {});
-
-    // console.log(filter(searchResult, 'name'));
-    res.status(200).json(searchResult);
+    res.status(200).json(items);
   },
 
   post: async (req, res) => {
-    const q = req.query.q;
-    const searchResult = await App.youTubeClient.searchVideos(q, 10);
+    const {videoId, title, thumbnail} = req.body;
+    const item = await History.create({videoId, title, thumbnail});
 
-    const allowed = ['title', 'thumbnails'];
-    const filtered = Object.keys(searchResult)
-      .filter(key => allowed.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = searchResult[key];
-
-        return obj;
-      }, {});
-
-    // console.log(filter(searchResult, 'name'));
-    res.status(200).json(searchResult);
+    res.status(200).json(item);
   },
 
   delete: async (req, res) => {
-    const q = req.query.q;
-    const searchResult = await App.youTubeClient.searchVideos(q, 10);
+    const {videoId} = req.body;
+    const itemStatus = await History.destroy({ where: {videoId} });
 
-    const allowed = ['title', 'thumbnails'];
-    const filtered = Object.keys(searchResult)
-      .filter(key => allowed.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = searchResult[key];
-
-        return obj;
-      }, {});
-
-    // console.log(filter(searchResult, 'name'));
-    res.status(200).json(searchResult);
+    res.status(200).json(itemStatus);
   },
 };

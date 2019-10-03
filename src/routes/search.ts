@@ -1,21 +1,28 @@
-// import { filter } from 'lodash';
+import { get, pick, reduce } from 'lodash';
 import { App } from '../App';
+
+interface IVideoItem {
+  videoId: string;
+  title: string;
+  thumbnail: string;
+}
 
 module.exports = {
   get: async (req, res) => {
-    const q = req.query.q;
+    const {q} = req.query;
     const searchResult = await App.youTubeClient.searchVideos(q, 10);
 
-    const allowed = ['title', 'thumbnails'];
-    const filtered = Object.keys(searchResult)
-      .filter(key => allowed.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = searchResult[key];
+    // @ts-ignore
+    res.status(200).json(reduce(searchResult, (result, value) => {
+      const item: IVideoItem = {
+        videoId: value.id,
+        title: value.title,
+        thumbnail: value.thumbnails.default.url,
+      };
 
-        return obj;
-      }, {});
+      result.push(item);
 
-    // console.log(filter(searchResult, 'name'));
-    res.status(200).json(searchResult);
+      return result;
+    },                          []));
   },
 };
