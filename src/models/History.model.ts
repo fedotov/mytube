@@ -5,16 +5,13 @@ import { DataTypes, Model } from 'sequelize';
  */
 class History extends Model {
   public id!: number;
-  public url!: string;
+  public videoId!: string;
+  public title!: string;
+  public thumbnail!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
-
-/**
- * Connection mytubeItem with History
- */
-class mytubeItemHistory extends Model {}
 
 const init = (db) => {
   History.init({
@@ -23,13 +20,21 @@ const init = (db) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    url: {
-      type: DataTypes.TEXT,
+    videoId: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    title: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    thumbnail: {
+      type: new DataTypes.STRING(128),
       allowNull: false,
     },
   },           {
     sequelize: db,
-    tableName: 'History',
+    tableName: 'history',
   });
 };
 

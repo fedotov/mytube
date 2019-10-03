@@ -30,7 +30,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /video/search/{query}:
+  /search/{query}:
     x-swagger-router-controller: search
     get:
       description: Returns a list of queried videos
@@ -46,15 +46,12 @@ paths:
         '200':
           description: App status
           schema:
-            type: object
-            properties:
-              x:
-                type: number
+            $ref: '#/definitions/HistoryItem'
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /video/history:
+  /history:
     x-swagger-router-controller: history
     get:
       description: Get history list
@@ -70,29 +67,31 @@ paths:
             $ref: '#/definitions/Error'
     post:
       description: Put to history list
+      operationId: post
       parameters:
         - in: body
           name: body
           description: Pass two numbers as a & b and returns sum.
           schema:
-            $ref: '#/definitions/historyItem'
+            $ref: '#/definitions/HistoryItem'
       responses:
         '200':
           description: App status
           schema:
-            $ref: '#/definitions/historyItem'
+            $ref: '#/definitions/HistoryItem'
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
     delete:
       description: delete from history
+      operationId: delete
       parameters:
         - in: body
           name: body
           description: Pass two numbers as a & b and returns sum.
           schema:
-            $ref: '#/definitions/historyItem'
+            $ref: '#/definitions/HistoryItem'
       responses:
         '204':
           description: item deleted
@@ -114,10 +113,10 @@ definitions:
         type: string
       app_name:
         type: string
-  historyItem:
+  HistoryItem:
     type: object
     required:
-      - id
+      - videoId
       - title
       - thumbnail
     properties:

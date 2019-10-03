@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { App } from './App';
 
-import { init as HistoryInit } from './models/History.model';
+import { History, init as HistoryInit } from './models/History.model';
 
 /**
  * Access point for database usage in app
@@ -43,6 +43,8 @@ export class DB {
     }
 
     HistoryInit(this.db);
+    await History.drop();
+    await History.sync();
 
     return this.db;
   }
