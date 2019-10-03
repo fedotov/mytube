@@ -13,3 +13,5 @@ cd ..
 npm start
 
 ```
+
+Open http://localhost:3300
