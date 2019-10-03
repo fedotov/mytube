@@ -1,0 +1,14 @@
+.list {
+  padding: 20px;
+  margin: -20px;
+  background-color: #fff;
+}
+
+.item {
+  margin: 10px 0;
+}
+
+.no-results {
+  margin: 0;
+  color: red;
+}

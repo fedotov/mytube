@@ -1,0 +1,9 @@
+<router-outlet>
+  <mat-toolbar>
+    <app-search-field class="search-field" (onPlay)="onPlay($event)"></app-search-field>
+  </mat-toolbar>
+  <div class="content">
+    <app-watch-history class="video-history" [watchList]="watchList" (onPlay)="onPlayFromHistory($event)"></app-watch-history>
+    <app-video-player class="video-player" [video]="playingVideo"></app-video-player>
+  </div>
+</router-outlet>

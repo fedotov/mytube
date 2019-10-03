@@ -1,0 +1,20 @@
+{
+  "name": "mytube",
+  "version": "1.0.0",
+  "description": "Readme",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./mock/index.js",
+    "start-fe": "cd front && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedotov/mytube.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fedotov/mytube/issues"
+  },
+  "homepage": "https://github.com/fedotov/mytube#readme"
+}
