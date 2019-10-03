@@ -88,6 +88,7 @@
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --config tslint.json -t codeFrame",
     "start-back": "tsc && node -r dotenv/config src/index.js",
+    "before-run": "docker-compose up --detach",
     "before-run-app": "sh local/docker-app-db-image.start.sh",
     "before-run-test": "sh local/docker-test-db-image.start.sh",
     "after-run": "sh local/docker-db-image.stop.sh",
