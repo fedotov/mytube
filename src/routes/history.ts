@@ -15,8 +15,8 @@ module.exports = {
   },
 
   delete: async (req, res) => {
-    const {videoId} = req.body;
-    const itemStatus = await History.destroy({ where: {videoId} });
+    const id = Number(req.query.q);
+    const itemStatus = await History.destroy({ where: {id} });
 
     res.status(200).json(itemStatus);
   },

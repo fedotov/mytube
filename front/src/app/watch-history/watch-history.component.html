@@ -1,5 +1,5 @@
 <p>Watch history</p>
 <div *ngFor="let video of watchList" class="item">
-  <div (click)="onPlay.emit(video)" class="title">{{ video.name }}</div>
+  <div (click)="onPlay.emit(video)" class="title">{{ video.title }}</div>
   <button (click)="onDelete(video)">x</button>
 </div>

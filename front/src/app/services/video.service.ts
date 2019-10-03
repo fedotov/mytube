@@ -18,7 +18,7 @@ export class VideoService {
 
   public async makeSearch(str: string) {
     try {
-    const searchList = <IVideo[]> await this.http.get(config.server + '/video/search/' + str).toPromise();
+    const searchList = <IVideo[]> await this.http.get(config.server + '/search?q=' + str).toPromise();
     this.onSearch.emit(searchList);
     } catch (err) {
       console.log(err);
@@ -27,7 +27,7 @@ export class VideoService {
 
   public async watch(video: IVideo) {
     try {
-    await this.http.post(config.server + '/video/history', video).toPromise();
+    await this.http.post(config.server + '/history', video).toPromise();
     } catch (err) {
       console.log(err);
     }
@@ -35,7 +35,7 @@ export class VideoService {
 
   public async updateWatchHistory() {
     try {
-    const history = <IVideo[]> await this.http.get(config.server + '/video/history').toPromise();
+    const history = <IVideo[]> await this.http.get(config.server + '/history').toPromise();
     this.onWatchHistory.emit(history);
     } catch (err) {
       console.log(err);
@@ -44,8 +44,8 @@ export class VideoService {
 
   public async delete(video: IVideo) {
     try {
-      const history = <IVideo[]> await this.http.delete(config.server + '/video/history/' + video.id).toPromise();
-      this.onWatchHistory.emit(history);
+      await this.http.delete(config.server + '/history?q=' + video.id).toPromise();
+      await this.updateWatchHistory();
     } catch (err) {
       console.log(err);
     }

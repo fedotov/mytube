@@ -43,7 +43,7 @@ export class DB {
     }
 
     HistoryInit(this.db);
-    await History.drop();
+    // await History.drop();
     await History.sync();
 
     return this.db;

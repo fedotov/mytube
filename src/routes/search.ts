@@ -1,4 +1,4 @@
-import { get, pick, reduce } from 'lodash';
+import { reduce } from 'lodash';
 import { App } from '../App';
 
 interface IVideoItem {
@@ -10,7 +10,7 @@ interface IVideoItem {
 module.exports = {
   get: async (req, res) => {
     const {q} = req.query;
-    const searchResult = await App.youTubeClient.searchVideos(q, 10);
+    const searchResult = await App.youTubeClient.searchVideos(q, 5);
 
     // @ts-ignore
     res.status(200).json(reduce(searchResult, (result, value) => {
@@ -23,6 +23,6 @@ module.exports = {
       result.push(item);
 
       return result;
-    },                          []));
+    }, []));
   },
 };

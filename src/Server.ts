@@ -1,5 +1,5 @@
 import { App } from './App';
-
+import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { initialize } from 'express-openapi';
@@ -68,8 +68,16 @@ export class Server {
   }
 
   private initMiddlewares(): void {
+    const corsMiddleware = cors({
+      origin: function (origin, callback) {
+        callback(null, true)
+      }
+    });
+
+    // this.expressApp.use(corsMiddleware);
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({extended: false}));
+    this.expressApp.use(express.static('front/dist'));
     this.expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this.expressApp.get('/api', (req, res) => res.json(apiDoc));
     this.expressApp.use((req, res, next) => {

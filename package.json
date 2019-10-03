@@ -40,7 +40,8 @@
     "swagger-ui-express": "^3.0.10",
     "typescript": "^3.6.3",
     "uuid": "^3.3.2",
-    "youtube-api-es6": "^1.0.3"
+    "youtube-api-es6": "^1.0.3",
+    "cors": "latest"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
@@ -83,11 +84,10 @@
     "collectCoverage": true
   },
   "scripts": {
-    "start": "node ./mock/index.js",
+    "start": "npm run before-run && tsc && node -r dotenv/config ./src/index.js",
     "start-fe": "cd front && npm start",
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --config tslint.json -t codeFrame",
-    "start-back": "tsc && node -r dotenv/config src/index.js",
     "before-run": "docker-compose up --detach",
     "before-run-app": "sh local/docker-app-db-image.start.sh",
     "before-run-test": "sh local/docker-test-db-image.start.sh",

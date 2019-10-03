@@ -13,7 +13,6 @@ export class AppComponent {
 
   constructor(private videoService: VideoService) {
     this.videoService.onWatchHistory.subscribe((history) => {
-      console.log('history', history);
       this.watchList = history;
     });
   }

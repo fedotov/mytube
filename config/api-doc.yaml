@@ -83,15 +83,17 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /history/{id}:
     delete:
       description: delete from history
       operationId: delete
       parameters:
-        - in: body
-          name: body
-          description: Pass two numbers as a & b and returns sum.
+        - name: query
+          in: body
+          description: id of item to delete
+          required: true
           schema:
-            $ref: '#/definitions/HistoryItem'
+            type: string
       responses:
         '204':
           description: item deleted
@@ -126,6 +128,13 @@ definitions:
         type: string
       thumbnail:
         type: string
+  DeleteItem:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
   Error:
     type: object
     required:
