@@ -7,20 +7,18 @@ import { IVideo } from '../IVideo';
   styleUrls: ['./video-player.component.css']
 })
 export class VideoPlayerComponent implements OnInit, AfterViewInit {
+  player;
 
   @Input()
   set video(video: IVideo) {
     if (!video) {
       return;
     }
-    console.log(video);
-    this.player.cueVideoById({
-      videoId: video.id
-    });
+
+    const { videoId } = video;
+    this.player.cueVideoById({ videoId });
     this.player.playVideo();
   }
-
-  player;
 
   constructor() { }
 
@@ -33,35 +31,19 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
     (<any>window).onYouTubeIframeAPIReady = () => {
       this.player = new (<any>window).YT.Player('player', {
         height: '100%',
         width: '100%',
-        // videoId: this.getVideo(),
-        events: {
-          // onReady: this.onPlayerReady.bind(this),
-        },
         playerVars: {
           autoplay: 1,
           controls: 0,
           modestbranding: 1,
-          // playlist: 'UG3sfZKtCQI,ALZHF5UqnU4,x9ZkC3OgI78',
           rel: 0,
           showInfo: 0
         }
       });
     };
-  }
-
-  onPlayerReady(event) {
-    console.log(event);
-
-    const videoId = 'fDRk2CW7AFk';
-    event.target.cueVideoById({
-      'videoId': videoId
-    });
-    event.target.playVideo();
   }
 
 }

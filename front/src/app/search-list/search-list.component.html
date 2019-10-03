@@ -1,4 +1,4 @@
 <div *ngIf="videos && videos.length > 0" class="list">
   <app-search-item *ngFor="let video of videos" [video]="video" (click)="onClick(video)" (onClick)="onClick(video)" class="item"></app-search-item>
 </div>
-<p *ngIf="videos && videos.length === 0">No results</p>
+<p *ngIf="videos && videos.length === 0" class="no-results">No results</p>

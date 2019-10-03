@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { SearchService } from '../services/search.service';
+import { VideoService } from '../services/video.service';
 import { IVideo } from '../IVideo';
 
 @Component({
@@ -11,7 +11,7 @@ export class SearchFieldComponent implements OnInit {
 
   @Output() onPlay = new EventEmitter<IVideo>();
 
-  constructor(private search: SearchService) { }
+  constructor(private search: VideoService) { }
 
   ngOnInit() {
   }

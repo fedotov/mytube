@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IVideo } from './IVideo';
+import { VideoService } from './services/video.service';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,23 @@ import { IVideo } from './IVideo';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'front';
-  video: IVideo;
+  playingVideo: IVideo;
+  watchList: IVideo[];
 
-  onPlay(video: IVideo) {
-    this.video = video;
+  constructor(private videoService: VideoService) {
+    this.videoService.onWatchHistory.subscribe((history) => {
+      console.log('history', history);
+      this.watchList = history;
+    });
+  }
+
+  async onPlay(video: IVideo) {
+    this.playingVideo = video;
+    await this.videoService.watch(video);
+    await this.videoService.updateWatchHistory();
+  }
+
+  async onPlayFromHistory(video: IVideo) {
+    this.playingVideo = video;
   }
 }

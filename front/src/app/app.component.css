@@ -10,7 +10,9 @@
 .video-history {
   height: 600px;
   width: 300px;
-  background-color: rebeccapurple;
+  background-color: black;
+  color: #ddd;
+  padding: 0 10px;
 }
 
 .video-player {

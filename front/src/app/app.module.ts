@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SearchListComponent } from './search-list/search-list.component';
 import { SearchItemComponent } from './search-list/search-item/search-item.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
+import { WatchHistoryComponent } from './watch-history/watch-history.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
     SearchFieldComponent,
     SearchListComponent,
     SearchItemComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    WatchHistoryComponent
   ],
   imports: [
     BrowserModule,

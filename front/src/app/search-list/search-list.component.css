@@ -7,3 +7,8 @@
 .item {
   margin: 10px 0;
 }
+
+.no-results {
+  margin: 0;
+  color: red;
+}

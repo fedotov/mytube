@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SearchService } from '../services/search.service';
+import { VideoService } from '../services/video.service';
 import { IVideo } from '../IVideo';
 
 @Component({
@@ -13,7 +13,7 @@ export class SearchListComponent {
 
   @Output() onPlay = new EventEmitter<IVideo>();
 
-  constructor(private search: SearchService) {
+  constructor(private search: VideoService) {
     search.onSearch.subscribe((videos) => {
       this.videos = videos;
     });
