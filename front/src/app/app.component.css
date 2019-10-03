@@ -1,0 +1,20 @@
+.search-field {
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+  height: 600px;
+}
+
+.video-history {
+  height: 600px;
+  width: 300px;
+  background-color: black;
+  color: #ddd;
+  padding: 0 10px;
+}
+
+.video-player {
+  flex-grow: 1;
+}

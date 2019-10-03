@@ -1,0 +1,14 @@
+p {
+  color: #000;
+}
+
+:host {
+  display: flex;
+  white-space: normal;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-name {
+  display: flex;
+}

@@ -1,11 +1,22 @@
 {
   "name": "mytube",
   "app_name": "mytube",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Readme",
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedotov/mytube.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fedotov/mytube/issues"
+  },
+  "homepage": "https://github.com/fedotov/mytube#readme",
   "main": "src/index.js",
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -72,9 +83,11 @@
     "collectCoverage": true
   },
   "scripts": {
+    "start": "node ./mock/index.js",
+    "start-fe": "cd front && npm start",
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --config tslint.json -t codeFrame",
-    "start": "tsc && node -r dotenv/config src/index.js",
+    "start-back": "tsc && node -r dotenv/config src/index.js",
     "before-run-app": "sh local/docker-app-db-image.start.sh",
     "before-run-test": "sh local/docker-test-db-image.start.sh",
     "after-run": "sh local/docker-db-image.stop.sh",

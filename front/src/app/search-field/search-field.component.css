@@ -1,0 +1,10 @@
+.input-field {
+  display: block;
+  width: 500px;
+  height: 60px;
+}
+
+.drop-down {
+  position: absolute;
+  width: 500px;
+}

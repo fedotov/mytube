@@ -1,0 +1,4 @@
+<mat-form-field class="input-field">
+  <input matInput (change)="onSearchChange($event.target.value)" placeholder="Type to search">
+</mat-form-field>
+<app-search-list class="drop-down" (onPlay)="onPlay.emit($event)"></app-search-list>
