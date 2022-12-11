@@ -20,7 +20,7 @@
   "main": "src/index.js",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-openapi": "^2.0.4",
     "google-auth-library": "^5.3.0",
     "googleapis": "^43.0.0",
